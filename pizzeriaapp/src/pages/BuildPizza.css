@@ -1,0 +1,64 @@
+.build-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.build-note {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.build-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.build-table tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.build-table td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.build-table img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.build-table .name {
+  width: 40%;
+}
+
+.build-table .price {
+  width: 20%;
+  font-weight: bold;
+}
+
+.build-table .add {
+  width: 20%;
+  color: orange;
+  font-weight: bold;
+}
+
+.build-table input {
+  margin-right: 8px;
+}
+
+.total {
+  margin-top: 20px;
+  color: #0033cc;
+}
+
+.build-btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: black;
+  color: white;
+  border: none;
+  font-size: 16px;
+}
