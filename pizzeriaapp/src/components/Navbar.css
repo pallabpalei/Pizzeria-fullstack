@@ -1,42 +1,121 @@
 .navbar {
   background: black;
-  color: white;
-  padding: 12px 20px;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 25px;
 }
 
+/* left side */
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
+}
+
+/* brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
 }
 
 .brand-text {
-  font-size: 22px;
-  color: #ccc;
-}
-
-.logo {
-  width: 45px;
-}
-
-.nav-left a {
   color: white;
-  text-decoration: none;
+  font-size: 28px;
   font-weight: 500;
 }
 
-.nav-left a:hover {
-  color: #f4b41a;
+.logo {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
+/* navbar links */
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #ffcc00;
+}
+
+/* right side */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* cart */
 .cart-btn {
-  background: #f4b41a;
+  background: #ffbf00;
   color: black;
-  padding: 8px 14px;
+  font-weight: bold;
+  padding: 10px 18px;
   border-radius: 4px;
   text-decoration: none;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* user menu */
+.user-menu {
+  position: relative;
+}
+
+.user-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+/* dropdown */
+.dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: white;
+  min-width: 160px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  z-index: 999;
+}
+
+.dropdown-user {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.dropdown-item:hover {
+  background: #f2f2f2;
 }

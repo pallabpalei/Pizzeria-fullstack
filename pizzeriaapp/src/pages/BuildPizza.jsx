@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { getIngredients, addToCart } from "../services/api";
 import { CartContext } from "../context/CartContext";
 import "./BuildPizza.css";
@@ -8,41 +9,62 @@ function BuildPizza() {
   const [selected, setSelected] = useState([]);
   const [total, setTotal] = useState(0);
 
-  const { refreshCart } = useContext(CartContext); // ✅ ADD THIS
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  // ✅ IMPORTANT: refreshCart for navbar badge update
+  const { refreshCart } = useContext(CartContext);
 
   useEffect(() => {
-    getIngredients().then(res => setIngredients(res.data));
+    getIngredients().then((res) => setIngredients(res.data));
   }, []);
 
   const toggleIngredient = (item, checked) => {
     if (checked) {
-      setSelected(prev => [...prev, item]);
-      setTotal(prev => prev + item.price);
+      setSelected((prev) => [...prev, item]);
+      setTotal((prev) => prev + Number(item.price));
     } else {
-      setSelected(prev => prev.filter(i => i.id !== item.id));
-      setTotal(prev => prev - item.price);
+      setSelected((prev) => prev.filter((i) => i.id !== item.id));
+      setTotal((prev) => prev - Number(item.price));
     }
   };
 
   const buildPizza = async () => {
+    if (!token) {
+      alert("Please login to add custom pizza to cart");
+      navigate("/login");
+      return;
+    }
+
     if (selected.length === 0) {
       alert("Please select at least one ingredient");
       return;
     }
 
-    await addToCart({
-      itemId: "CUSTOM",
-      name: "Custom Pizza",
-      price: total,
-      quantity: 1,
-      type: "custom"
-    });
+    try {
+      await addToCart({
+        itemId: "CUSTOM",
+        name: "Custom Pizza",
+        price: total,
+        basePrice: total,
+        extraToppingCost: 0,
+        quantity: 1,
+        type: "custom",
+        isCustom: true,
+        selectedIngredients: selected.map((x) => x.tname),
+        selectedToppings: []
+      });
 
-    await refreshCart(); // 🔥 THIS FIXES THE NAVBAR COUNT
+      // ✅ instantly update navbar badge
+      await refreshCart();
 
-    alert("Custom pizza added to cart");
-    setSelected([]);
-    setTotal(0);
+      alert("Custom pizza added to cart ✅");
+      setSelected([]);
+      setTotal(0);
+    } catch (err) {
+      console.log(err);
+      alert("Failed to add custom pizza");
+    }
   };
 
   return (
@@ -54,7 +76,7 @@ function BuildPizza() {
 
       <table className="build-table">
         <tbody>
-          {ingredients.map(item => (
+          {ingredients.map((item) => (
             <tr key={item.id}>
               <td>
                 <img src={item.image} alt={item.tname} />
@@ -64,7 +86,7 @@ function BuildPizza() {
               <td className="add">
                 <input
                   type="checkbox"
-                  checked={selected.some(i => i.id === item.id)}
+                  checked={selected.some((i) => i.id === item.id)}
                   onChange={(e) => toggleIngredient(item, e.target.checked)}
                 />
                 <span>Add</span>
@@ -74,7 +96,7 @@ function BuildPizza() {
         </tbody>
       </table>
 
-      <h3 className="total">Total Cost : ₹{total}</h3>
+      <h3 className="total">Total Cost : {total}</h3>
 
       <button className="build-btn" onClick={buildPizza}>
         Build Ur Pizza

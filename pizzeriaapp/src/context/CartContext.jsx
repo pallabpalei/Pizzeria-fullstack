@@ -7,11 +7,30 @@ export function CartProvider({ children }) {
   const [cartCount, setCartCount] = useState(0);
 
   const refreshCart = async () => {
-    const res = await getCart();
-    const count = res.data.reduce((sum, i) => sum + i.quantity, 0);
-    setCartCount(count);
+    try {
+      const token = localStorage.getItem("token");
+
+      // ✅ if not logged in, cart count must be 0
+      if (!token) {
+        setCartCount(0);
+        return;
+      }
+
+      const res = await getCart();
+
+      const totalCount = res.data.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+
+      setCartCount(totalCount);
+    } catch (err) {
+      console.log(err);
+      setCartCount(0);
+    }
   };
 
+  // ✅ refresh once when app loads
   useEffect(() => {
     refreshCart();
   }, []);
